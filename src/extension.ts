@@ -14,12 +14,12 @@ export function activate(context: vscode.ExtensionContext) {
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
 	let disposable = vscode.workspace.onWillSaveNotebookDocument(event => {
-		if (event.reason == vscode.NotebookDocumentSaveReason.Manual) {
+		if (event.reason == vscode.TextDocumentSaveReason.Manual) {
 			event.waitUntil(new Promise((resolve) => {
 				const notebookEdit = new vscode.NotebookEdit(new vscode.NotebookRange(0, 0), [new vscode.NotebookCellData(vscode.NotebookCellKind.Code, 'print(1)', 'python')]);
 				const edit = new vscode.WorkspaceEdit();
 				edit.set(event.document.uri, [notebookEdit]);
-				resolve([edit]);
+				resolve(edit);
 			}));
 		}
 	});

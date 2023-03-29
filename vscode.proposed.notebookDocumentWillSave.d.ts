@@ -5,28 +5,6 @@
 
 declare module 'vscode' {
 	/**
-	 * Represents reasons why a notebook document is saved.
-	 */
-	export enum NotebookDocumentSaveReason {
-
-		/**
-		 * Manually triggered, e.g. by the user pressing save, by starting debugging,
-		 * or by an API call.
-		 */
-		Manual = 1,
-
-		/**
-		 * Automatic after a delay.
-		 */
-		AfterDelay = 2,
-
-		/**
-		 * When the editor lost focus.
-		 */
-		FocusOut = 3
-	}
-
-	/**
 	 * An event that is fired when a {@link NotebookDocument document} will be saved.
 	 *
 	 * To make modifications to the document before it is being saved, call the
@@ -34,6 +12,10 @@ declare module 'vscode' {
 	 * that resolves to an array of {@link TextEdit text edits}.
 	 */
 	export interface NotebookDocumentWillSaveEvent {
+		/**
+		 * A cancellation token.
+		 */
+		readonly token: CancellationToken;
 
 		/**
 		 * The document that will be saved.
@@ -43,9 +25,9 @@ declare module 'vscode' {
 		/**
 		 * The reason why save was triggered.
 		 */
-		readonly reason: NotebookDocumentSaveReason;
+		readonly reason: TextDocumentSaveReason;
 
-		waitUntil(thenable: Thenable<readonly WorkspaceEdit[]>): void;
+		waitUntil(thenable: Thenable<WorkspaceEdit>): void;
 
 		waitUntil(thenable: Thenable<any>): void;
 	}
